@@ -22,7 +22,7 @@ The syntax of the program calling is:
 The program will output the result. So it's possible to pipe it:
 
 ```
-	python3 filemash.py main_file_path.foo | output.baz
+	python3 filemash.py main_file_path.foo | cat
 ```
 ## Test the embedded sample
 

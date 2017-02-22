@@ -1,0 +1,9 @@
+ABOUT THIS ANIMAL
+
+The rabbit is a cute animal which is pretty good as food as well.
+
+WHAT IT DON'T WANT TO EAT
+
+@@connection ../fruits/tomatos.txt
+
+

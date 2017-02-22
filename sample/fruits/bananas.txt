@@ -1,0 +1,3 @@
+Banana is a soft and sweet fruit. Monkeys like that.
+
+@@connection ../animals/monkey.txt

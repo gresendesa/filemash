@@ -1,0 +1,8 @@
+ABOUT THIS ANIMAL
+
+The monkey is a funny animal.
+
+WHAT IT WANTS TO EAT
+
+@@connection ../fruits/bananas.txt
+

@@ -1,10 +1,10 @@
 '''
     File name: filemash.py
-    Version: 0.1
+    Version: 0.2
     Author: Guilherme Sá
     Email: gresendesa@gmail.com
     Date created: 2/22/2017
-    Date last modified: 2/22/2017
+    Date last modified: 2/23/2017
     Python Version: 3.6	
 '''
 
@@ -13,11 +13,9 @@ import os
 import re
 import string
 
-CONNECTION_COM = '@@connection'
-CONNECTION_PATTERN = '^( +)?' + CONNECTION_COM + ' ( +)?.*$'
+CONNECTION_COM = '@>'
+CONNECTION_PATTERN = CONNECTION_COM + ' ( +)?["\'].*["\']'
 DEPENDENCY_BRANCH = []
-if len(sys.argv) > 1:
-	ROOT_DIR = os.path.dirname(sys.argv[1])
 
 def file_exists(file_path):
 	"""
@@ -28,11 +26,21 @@ def file_exists(file_path):
 	else:
 		return False
 
+def get_root_dir():
+	"""
+		It gets a root directory from the program argument
+	"""
+	root_dir = ''
+	if len(sys.argv) > 1 and len(os.path.dirname(sys.argv[1])) > 0:
+		root_dir = os.path.dirname(sys.argv[1]) + '/'
+	return root_dir
+
+
 def is_connection(line):
 	"""
 		Checks if the passed text maches to a connection sintax (Boolean)
 	"""
-	if re.match(CONNECTION_PATTERN, line):
+	if re.match('^.*' + CONNECTION_PATTERN, line):
 		return True
 	else:
 		return False
@@ -41,13 +49,13 @@ def get_connection_param(connection):
 	"""
 		Gets a string connection and extracts its parameter and interprets it as a relative path
 	"""
-	return re.sub(' +', ' ', connection.strip()).split(CONNECTION_COM)[1].strip()
+	return re.search(CONNECTION_PATTERN, re.sub(' +', ' ', connection.strip())).group(0).strip().replace('"', '').replace("'", '').split(CONNECTION_COM)[1].strip()
 
 def get_branch_path(deep = None):
 	"""
 		It gets a path and bind the defined root dir
 	"""
-	path = ROOT_DIR + '/'
+	path = get_root_dir()
 	if deep == None:
 		deep = len(DEPENDENCY_BRANCH)
 	for i in range(0, deep):
@@ -81,7 +89,7 @@ def get_processed_line(line):
 	"""
 	if is_connection(line):
 		if file_exists(append_branch_path(get_connection_param(line), False)) and not(is_connection_circular(line)):
-			return compose(get_connection_param(line))
+			return re.sub(CONNECTION_PATTERN, compose(get_connection_param(line)), line)
 		else:
 			return None
 	else:
@@ -155,7 +163,10 @@ def compose(file_path):
 	DEPENDENCY_BRANCH.append(file_path)
 	composing = build_file(file_path)
 	DEPENDENCY_BRANCH.pop()
-	return composing
+	if composing != None:
+		return composing.strip('\n')
+	else:
+		return None
 
 def main_controller():
 	"""

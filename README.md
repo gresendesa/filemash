@@ -6,7 +6,7 @@ This program brings together files that links to each other into one file.
 	
 A file (a) references another (b) through the expression:
 ```
-	@@connection [file_path_b]
+	@> "[file_path_b]"
 ```
 Once this expression is put inside file (a), the content of file (b) will replace the expression that refers it.
 

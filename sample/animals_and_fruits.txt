@@ -1,6 +1,6 @@
-@@connection animals/monkey.txt
+@> "animals/monkey.txt"
 
 =================================
 =================================
 
-@@connection animals/rabbit.txt
+@> "animals/rabbit.txt"

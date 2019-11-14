@@ -90,7 +90,8 @@ class File:
 			Else it returns the same input.
 		"""
 		if self.is_connection(line):
-			if self.file_exists(self.append_branch_path(self.get_connection_param(line), False)) and not(self.is_connection_circular(line)):
+			f=self.append_branch_path(self.get_connection_param(line), False)
+			if self.file_exists(f) and not(self.is_connection_circular(line)):
 				return re.sub(self.CONNECTION_PATTERN, self.compose(self.get_connection_param(line)), line)
 			else:
 				return None
@@ -171,4 +172,4 @@ class File:
 			return None
 
 	def mash(self):
-		print(self.compose(os.path.basename(self.file_name)))
+		return self.compose(os.path.basename(self.file_name))

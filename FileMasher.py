@@ -108,22 +108,22 @@ class File:
 		else:
 			return "the main input"
 
-	def show_log_error(self, file_name, line_number, message):
+	def raise_exception(self, file_name, line_number, message):
 		"""
 			Shows a message error in the default way
 		"""
-		print("Error: {} ({}, on line {})".format(message, os.path.normpath(file_name), line_number))
+		raise Exception ("Error: {} ({}, on line {})".format(message, os.path.normpath(file_name), line_number))
 
 	def handle_error(self, file_name, line_number, connection):
 		"""
 			Finds out the type error
 		"""
 		if self.is_connection_circular(connection):
-			self.show_log_error(file_name, line_number, "Circular connection to {} defined previously at {}".format(self.append_branch_path(self.get_connection_param(connection), False), self.get_parent_file_path(connection)))
+			self.raise_exception(file_name, line_number, "Circular connection to {} defined previously at {}".format(self.append_branch_path(self.get_connection_param(connection), False), self.get_parent_file_path(connection)))
 		if self.file_exists(self.append_branch_path(self.get_connection_param(connection), False)):
-			self.show_log_error(file_name, line_number, "Dependency not satisfied")
+			self.raise_exception(file_name, line_number, "Dependency not satisfied")
 		else:
-			self.show_log_error(file_name, line_number, "File \"{}\" not found".format(self.append_branch_path(self.get_connection_param(connection), False)))
+			self.raise_exception(file_name, line_number, "File \"{}\" not found".format(self.append_branch_path(self.get_connection_param(connection), False)))
 
 	def concat(self, str_a, str_b):
 		"""

@@ -13,11 +13,11 @@ import string
 
 class File:
 	def __init__(self, file_name):
+		token = '@>'
 		self.file_name = file_name
-
-	CONNECTION_COM = '@>'
-	CONNECTION_PATTERN = CONNECTION_COM + ' ( +)?["\'].*["\']'
-	DEPENDENCY_BRANCH = []
+		self.CONNECTION_COM = token
+		self.CONNECTION_PATTERN = token + ' ( +)?["\'].*["\']'
+		self.DEPENDENCY_BRANCH = []
 
 	def file_exists(self, file_path):
 		"""

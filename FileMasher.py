@@ -143,6 +143,7 @@ class File:
 			built_file = ''
 			line_counter = 0
 			for line in file:
+				line = re.escape(line)
 				line_counter += 1
 				built_file = self.concat(built_file, self.get_processed_line(line))
 				if built_file == None:

@@ -13,10 +13,10 @@ import string
 
 class File:
 	def __init__(self, file_name):
-		token = '@>'
+		token_open = '{%'
+		token_close = '%}'
 		self.file_name = file_name
-		self.CONNECTION_COM = token
-		self.CONNECTION_PATTERN = token + ' ( +)?["\'].*["\']'
+		self.CONNECTION_PATTERN = '{} *["\']([^"\']+)["\'] *{}'.format(token_open, token_close)
 		self.DEPENDENCY_BRANCH = []
 
 	def file_exists(self, file_path):
@@ -51,7 +51,8 @@ class File:
 		"""
 			Gets a string connection and extracts its parameter and interprets it as a relative path
 		"""
-		return re.search(self.CONNECTION_PATTERN, re.sub(' +', ' ', connection.strip())).group(0).strip().replace('"', '').replace("'", '').split(self.CONNECTION_COM)[1].strip()
+		return re.search(self.CONNECTION_PATTERN, connection).group(1)
+		#return re.search(self.CONNECTION_PATTERN, re.sub(' +', ' ', connection.strip())).group(0).strip().replace('"', '').replace("'", '').split(self.CONNECTION_COM)[1].strip()
 
 	def get_branch_path(self, deep = None):
 		"""
@@ -92,7 +93,8 @@ class File:
 		if self.is_connection(line):
 			f=self.append_branch_path(self.get_connection_param(line), False)
 			if self.file_exists(f) and not(self.is_connection_circular(line)):
-				return re.sub(self.CONNECTION_PATTERN, self.compose(self.get_connection_param(line)), line)
+				snippet = re.search(self.CONNECTION_PATTERN, line).group(0)
+				return line.replace(snippet, self.compose(self.get_connection_param(line)))
 			else:
 				return None
 		else:
@@ -143,7 +145,6 @@ class File:
 			built_file = ''
 			line_counter = 0
 			for line in file:
-				line = re.escape(line)
 				line_counter += 1
 				built_file = self.concat(built_file, self.get_processed_line(line))
 				if built_file == None:

@@ -1,6 +1,6 @@
-@> "animals/monkey.txt"
+{% "animals/monkey.txt" %}
 
 =================================
 =================================
 
-@> "animals/rabbit.txt"
+{% "animals/rabbit.txt" %}

@@ -4,4 +4,4 @@ The monkey is a funny animal.
 
 WHAT IT WANTS TO EAT
 
-@> "../fruits/bananas.txt"
+{% "../fruits/bananas.txt" %}
